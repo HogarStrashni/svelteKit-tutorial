@@ -1,8 +1,17 @@
 <script lang="ts">
+	import type { PageData } from './$types';
+	import { superForm } from 'sveltekit-superforms/client';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+
+	export let data: PageData;
+
+	const { form, errors, enhance } = superForm(data.form);
 </script>
 
+<SuperDebug data={$form} />
+
 <section class="p-3">
-	<form>
+	<form method="POST" use:enhance>
 		<div class="space-y-12">
 			<div class="border-b border-gray-900/10 pb-12">
 				<label
@@ -15,7 +24,12 @@
 					name="firstName"
 					id="firstName"
 					class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
+					data-invalid={$errors.firstName}
+					bind:value={$form.firstName}
 				/>
+				{#if $errors.firstName}
+					<p class="text-xs text-red-500">{$errors.firstName}</p>
+				{/if}
 
 				<label for="lastName" class="mt-6 block text-sm font-medium leading-6 text-gray-900"
 					>Last name
@@ -25,17 +39,27 @@
 					name="lastName"
 					id="lastName"
 					class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
+					data-invalid={$errors.lastName}
+					bind:value={$form.lastName}
 				/>
+				{#if $errors.lastName}
+					<p class="mt-2 text-xs text-red-500">{$errors.lastName}</p>
+				{/if}
 
-				<label for="user" class="mt-6 block text-sm font-medium leading-6 text-gray-900"
-					>User
+				<label for="email" class="mt-6 block text-sm font-medium leading-6 text-gray-900"
+					>Email
 				</label>
 				<input
 					type="text"
-					name="user"
-					id="user"
+					name="email"
+					id="email"
 					class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
+					data-invalid={$errors.email}
+					bind:value={$form.email}
 				/>
+				{#if $errors.email}
+					<p class="mt-2 text-xs text-red-500">{$errors.email}</p>
+				{/if}
 
 				<label for="password" class="mt-6 block text-sm font-medium leading-6 text-gray-900"
 					>Password
@@ -45,7 +69,12 @@
 					name="password"
 					id="password"
 					class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
+					data-invalid={$errors.password}
+					bind:value={$form.password}
 				/>
+				{#if $errors.password}
+					<p class="mt-2 text-xs text-red-500">{$errors.password}</p>
+				{/if}
 			</div>
 		</div>
 
