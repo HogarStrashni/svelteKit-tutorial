@@ -1,6 +1,8 @@
-import { error } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
+
+import type { Actions } from './$types';
 
 const schema = z.object({
 	firstName: z.string().nonempty(),
@@ -9,8 +11,8 @@ const schema = z.object({
 	password: z.string().min(6, { message: 'Minimal 6 characters' })
 });
 
-export const load = async () => {
-	const form = await superValidate(schema);
+export const load = async (event) => {
+	const form = await superValidate(event, schema);
 	return { form };
 };
 
@@ -18,12 +20,10 @@ export const actions = {
 	default: async ({ request }) => {
 		const form = await superValidate(request, schema);
 
-		console.log(form);
-
 		if (!form.valid) {
-			throw error(400, { message: 'Form data not valid' });
+			return fail(400, { form });
 		}
 
 		return { form };
 	}
-};
+} satisfies Actions;

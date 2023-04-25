@@ -1,14 +1,15 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	// import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
 	export let data: PageData;
 
-	const { form, errors, enhance } = superForm(data.form);
+	const { form, errors, enhance, constraints } = superForm(data.form);
 </script>
 
-<SuperDebug data={$form} />
+<!-- ### Superforms component (form data preview) ### -->
+<!-- <SuperDebug data={$form} /> -->
 
 <section class="p-3">
 	<form method="POST" use:enhance>
@@ -26,6 +27,7 @@
 					class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
 					data-invalid={$errors.firstName}
 					bind:value={$form.firstName}
+					{...$constraints.firstName}
 				/>
 				{#if $errors.firstName}
 					<p class="text-xs text-red-500">{$errors.firstName}</p>
@@ -41,6 +43,7 @@
 					class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
 					data-invalid={$errors.lastName}
 					bind:value={$form.lastName}
+					{...$constraints.lastName}
 				/>
 				{#if $errors.lastName}
 					<p class="mt-2 text-xs text-red-500">{$errors.lastName}</p>
@@ -56,6 +59,7 @@
 					class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
 					data-invalid={$errors.email}
 					bind:value={$form.email}
+					{...$constraints.email}
 				/>
 				{#if $errors.email}
 					<p class="mt-2 text-xs text-red-500">{$errors.email}</p>
@@ -71,6 +75,7 @@
 					class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"
 					data-invalid={$errors.password}
 					bind:value={$form.password}
+					{...$constraints.password}
 				/>
 				{#if $errors.password}
 					<p class="mt-2 text-xs text-red-500">{$errors.password}</p>
